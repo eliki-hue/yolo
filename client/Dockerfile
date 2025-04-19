@@ -13,9 +13,13 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
+# Fix Webpack OpenSSL issue on Node 17+
+ENV NODE_OPTIONS=--openssl-legacy-provider
+RUN npm run build
+
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
