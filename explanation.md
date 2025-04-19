@@ -63,3 +63,29 @@ To get everything up and running:
 
 ```bash
 docker-compose up --build
+
+### Debugging
+
+For debugging, I used a few useful Docker commands:
+
+- `docker ps` to check which containers were running.
+- `docker logs <container>` to check logs for any errors or issues.
+- `docker exec -it <container> /bin/sh` to get inside a container and inspect the environment or run commands directly.
+
+I also tested the app by accessing the frontend via a browser and interacting with the backend API to ensure everything was functioning correctly.
+
+---
+
+## 7. Good Practices Followed
+
+Here are some good practices I followed to keep the project maintainable and professional:
+
+- **Semantic versioning** for Docker image tags (`v1.0.0`, `v1.2.0`) made it easy to track versions.
+- I included a `.dockerignore` file to exclude unnecessary files from the build context and keep the image clean.
+- I commented on the Dockerfile and Docker Compose file to explain the purpose of different parts and make it easier for others (or myself in the future) to understand the setup.
+
+---
+
+## 8. Screenshot from DockerHub
+
+I've included a screenshot of the `elijah-yolo-client` and `elijah-yolo-backend` images with the tags `v1.2.0` and `v1.0.0` respectively on DockerHub. This shows that the image was successfully pushed and is available for use.
