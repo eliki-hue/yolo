@@ -11,8 +11,8 @@ version: "3.8"
 services:
 
   #Builds the frontend Docker image and creates the frontend microservice
-  brian-yolo-client:
-    image: elikie/elijah-yolo-client:v1.1.0
+  elijah-yolo-client:
+    image: elikie/elijah-yolo-client:v1.0.0
     build: ./client
     container_name: elijah-yolo-client
     stdin_open: true
@@ -20,12 +20,12 @@ services:
     ports:
       - "3000:3000"
     depends_on: 
-      - elikie-yolo-backend
+      - elijah-yolo-backend
     networks:
       - app-net
 
   #Builds the backend Docker image and creates the backend microservice
-  brian-yolo-backend:
+  elijah-yolo-backend:
     image: elikie/elijah-yolo-backend:v1.0.0
     build: ./backend
     container_name: elijah-yolo-backend
