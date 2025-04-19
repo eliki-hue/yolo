@@ -17,7 +17,7 @@ FROM node:14-slim
 
 WORKDIR /app
 
-RUN apk update && apk add npm
+# RUN apk update && apk add npm
 
 COPY --from=build /usr/src/app /app
 
