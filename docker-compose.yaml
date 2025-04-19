@@ -12,14 +12,14 @@ services:
 
   #Builds the frontend Docker image and creates the frontend microservice
   elijah-yolo-client:
-    image: elikie/elijah-yolo-client:v1.1.0
+    image: elikie/elijah-yolo-client:v1.2.0
     build: ./client
     container_name: elijah-yolo-client
     stdin_open: true
     tty: true
 
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on: 
       - elijah-yolo-backend
     networks:
