@@ -33,4 +33,9 @@
           - nodejs
         state: present
 
+    - name: Install PM2 globally
+      npm:
+        name: pm2
+        global: yes
+
     
