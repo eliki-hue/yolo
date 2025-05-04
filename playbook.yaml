@@ -1,6 +1,13 @@
 ---
 - hosts: all
   become: yes
+
+  vars:
+    node_version: "14.x"
+    app_path: "/home/vagrant/app"
+    frontend_dir: "{{ app_path }}/client"
+    backend_dir: "{{ app_path }}/server"
+
   tasks:
 
     - name: test connectivity
@@ -8,3 +15,16 @@
 
     - name: Update apt cache
       apt: update_cache=yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - curl
+          - gnupg
+          - nginx
+        state: present
+
+    - name: Add Node.js apt key
+      shell: curl -sL https://deb.nodesource.com/setup_{{ node_version }} | bash -
+
+    
