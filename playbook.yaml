@@ -56,4 +56,22 @@
       args:
         chdir: "{{ backend_dir }}"
 
-   
+    - name: Install frontend dependencies
+      npm:
+        path: "{{ frontend_dir }}"
+
+    - name: Build frontend
+      shell: npm run build
+      args:
+        chdir: "{{ frontend_dir }}"
+
+    - name: Copy frontend build to nginx directory
+      copy:
+        src: "{{ frontend_dir }}/build/"
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: "0755"
+        remote_src: yes
+
+    
