@@ -3,5 +3,8 @@
   become: yes
   tasks:
 
+    - name: test connectivity
+      ping:
+
     - name: Update apt cache
       apt: update_cache=yes
