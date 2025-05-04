@@ -98,4 +98,17 @@
               }
           }
 
-    
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+
+    - name: Start backend with pm2
+      command: pm2 start server.js --name backend
+      args:
+        chdir: /vagrant/backend
+
+    - name: Start frontend with pm2
+      command: pm2 start "npm start" --name frontend
+      args:
+        chdir: /vagrant/client
