@@ -45,4 +45,15 @@
         recursive: yes
         delete: no
 
-    
+    - name: Install backend dependencies
+      npm:
+        path: "{{ backend_dir }}"
+
+    - name: Start backend with PM2
+      shell: |
+        pm2 start index.js --name ecommerce-backend
+        pm2 save
+      args:
+        chdir: "{{ backend_dir }}"
+
+   
