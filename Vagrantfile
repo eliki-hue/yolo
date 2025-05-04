@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
 
   # Provision with Ansible
   config.vm.provision "ansible_local" do |ansible|
-    ansible.playbook = "provision.yml"
+    ansible.playbook = "playbook.yaml"
     ansible.verbose = 'vv'
   end
 end
