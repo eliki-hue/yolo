@@ -1,0 +1,37 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for setup_logic
+- name: test connectivity
+  ping:
+
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Install required packages
+  apt:
+    name:
+      - curl
+      - gnupg
+      - nginx
+    state: present
+
+- name: Add Node.js apt key
+  shell: curl -sL https://deb.nodesource.com/setup_{{ node_version }} | bash -
+
+- name: Install Node.js
+  apt:
+    name:
+      - nodejs
+    state: present
+
+- name: Install PM2 globally
+  npm:
+    name: pm2
+    global: yes
+
+- name: Copy project files to VM
+  synchronize:
+    src: "{{ playbook_dir }}/"
+    dest: "{{ app_path }}"
+    recursive: yes
+    delete: no

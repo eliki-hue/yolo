@@ -8,107 +8,15 @@
     frontend_dir: "{{ app_path }}/client"
     backend_dir: "{{ app_path }}/server"
 
-  tasks:
+  roles:
+    - setup_logic
+    - back-end-logic
+    - front-end-logic
 
-    - name: test connectivity
-      ping:
+    
 
-    - name: Update apt cache
-      apt: update_cache=yes
 
-    - name: Install required packages
-      apt:
-        name:
-          - curl
-          - gnupg
-          - nginx
-        state: present
+     
+      
 
-    - name: Add Node.js apt key
-      shell: curl -sL https://deb.nodesource.com/setup_{{ node_version }} | bash -
-
-    - name: Install Node.js
-      apt:
-        name:
-          - nodejs
-        state: present
-
-    - name: Install PM2 globally
-      npm:
-        name: pm2
-        global: yes
-
-    - name: Copy project files to VM
-      synchronize:
-        src: "{{ playbook_dir }}/"
-        dest: "{{ app_path }}"
-        recursive: yes
-        delete: no
-
-    - name: Install backend dependencies
-      npm:
-        path: "{{ backend_dir }}"
-
-    - name: Start backend with PM2
-      shell: |
-        pm2 start index.js --name ecommerce-backend
-        pm2 save
-      args:
-        chdir: "{{ backend_dir }}"
-
-    - name: Install frontend dependencies
-      npm:
-        path: "{{ frontend_dir }}"
-
-    - name: Build frontend
-      shell: npm run build
-      args:
-        chdir: "{{ frontend_dir }}"
-
-    - name: Copy frontend build to nginx directory
-      copy:
-        src: "{{ frontend_dir }}/build/"
-        dest: /var/www/html/
-        owner: www-data
-        group: www-data
-        mode: "0755"
-        remote_src: yes
-
-    - name: Configure Nginx
-      copy:
-        dest: /etc/nginx/sites-available/default
-        content: |
-          server {
-              listen 80;
-              root /var/www/html;
-              index index.html;
-              server_name _;
-
-              location / {
-                  try_files $uri /index.html;
-              }
-
-              location /api/ {
-                  proxy_pass http://localhost:5000/;
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection 'upgrade';
-                  proxy_set_header Host $host;
-                  proxy_cache_bypass $http_upgrade;
-              }
-          }
-
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
-
-    - name: Start backend with pm2
-      command: pm2 start server.js --name backend
-      args:
-        chdir: /vagrant/backend
-
-    - name: Start frontend with pm2
-      command: pm2 start "npm start" --name frontend
-      args:
-        chdir: /vagrant/client
+    

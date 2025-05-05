@@ -1,0 +1,14 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for back-end-logic
+- name: Start backend with PM2
+  shell: |
+    pm2 start index.js --name ecommerce-backend
+    pm2 save
+  args:
+        chdir: "{{ backend_dir }}"
+
+- name: Start backend with pm2
+  command: pm2 start server.js --name backend
+  args:
+    chdir: /vagrant/backend
