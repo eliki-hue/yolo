@@ -2,11 +2,8 @@
 - hosts: all
   become: yes
 
-  vars:
-    node_version: "14.x"
-    app_path: "/home/vagrant/app"
-    frontend_dir: "{{ app_path }}/client"
-    backend_dir: "{{ app_path }}/server"
+  vars_files:
+    -vars/setupvars.yml
 
   roles:
     - setup_logic
