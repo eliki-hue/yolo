@@ -1,0 +1,20 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/docker-logic
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+
+- name: Ensure Docker is running
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    groups: docker
+    append: yes
