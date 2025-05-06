@@ -19,7 +19,7 @@
     tag: latest
     source: build
     build:
-      path: /vagrant/backend
+      path: "{{ backend_dir }}"
       dockerfile: Dockerfile
 
 - name: Run backend Docker container
