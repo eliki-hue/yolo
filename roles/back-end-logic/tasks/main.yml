@@ -16,9 +16,11 @@
 - name: Build backend Docker image
   community.docker.docker_image:
     name: backend-image
-    build:
-      path: "{{ backend_dir }}"
+    tag: latest
     source: build
+    build:
+      path: /vagrant/backend
+      dockerfile: Dockerfile
 
 - name: Run backend Docker container
   community.docker.docker_container:
