@@ -11,5 +11,5 @@
   git :
     repo : "{{github_repo}}"
     dest: /vagrant/app
-    version: main
+    version: master
     

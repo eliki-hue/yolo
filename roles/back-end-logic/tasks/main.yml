@@ -1,15 +1,31 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for back-end-logic
-- name: Start backend with PM2
-  shell: |
-    pm2 start index.js --name ecommerce-backend
-    pm2 save
-  args:
-        chdir: "{{ backend_dir }}"
+# - name: Start backend with PM2
+#   shell: |
+#     pm2 start index.js --name ecommerce-backend
+#     pm2 save
+#   args:
+#         chdir: "{{ backend_dir }}"
 
-- name: Restart backend with PM2 if already started, otherwise start
-  shell: |
-    pm2 describe backend > /dev/null && pm2 restart backend || pm2 start server.js --name backend
-  args:
-    chdir: /vagrant/backend
+# - name: Restart backend with PM2 if already started, otherwise start
+#   shell: |
+#     pm2 describe backend > /dev/null && pm2 restart backend || pm2 start server.js --name backend
+#   args:
+#     chdir: /vagrant/backend
+- name: Build backend Docker image
+  community.docker.docker_image:
+    name: backend-image
+    build:
+      path: "{{ backend_dir }}"
+    source: build
+
+- name: Run backend Docker container
+  community.docker.docker_container:
+    name: backend
+    image: backend-image
+    state: started
+    restart_policy: always
+    ports:
+      - "5000:5000"
+    working_dir: /app
