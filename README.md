@@ -81,7 +81,7 @@ Make sure you have these installed on your system before running the project:
 
 2. Start the Vagrant Virtual Machine
 Make sure Vagrant is installed on your system. Then run:
-'''bash
+
     vagrant up
 
 this will :
@@ -110,5 +110,5 @@ To inspect or run commands manually:
 
 
 
-'''bash
+
     vagrant ssh
