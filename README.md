@@ -82,20 +82,20 @@ Make sure you have these installed on your system before running the project:
 2. Start the Vagrant Virtual Machine
 Make sure Vagrant is installed on your system. Then run:
 '''bash
-vagrant up
+    vagrant up
 
 this will :
-Create a virtual machine
+    Create a virtual machine
 
-Provision it using Ansible (as defined in the Vagrantfile)
+    Provision it using Ansible (as defined in the Vagrantfile)
 
-Install Docker
+    Install Docker
 
-Clone your app code
+    Clone your app code
 
-Build the Docker image
+    Build the Docker image
 
-Run the backend container
+    Run the backend container
 
 3. Access the Backend
 Once setup completes, open your browser and go to:
@@ -111,4 +111,4 @@ To inspect or run commands manually:
 
 
 '''bash
-vagrant ssh
+    vagrant ssh
