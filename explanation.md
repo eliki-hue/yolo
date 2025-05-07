@@ -1,91 +1,71 @@
-# Explanation of Docker Setup
+ Project Explanation
 
-## 1. Choosing the Right Base Image
+This project focuses on deploying a simple e-commerce backend using a combination of Vagrant, Ansible, and Docker. The aim was to automate as much of the setup as possible, avoiding manual steps and ensuring consistent and repeatable environments.
 
-### Frontend (elijah-yolo-client):
-I went with `node:16-alpine` for the React app. It’s a lightweight version of the Node image that keeps the image size down without losing the essential tools needed to build and run the React app.
+## Objective
 
-### Backend (elijah-yolo-backend):
-For the backend, I used the same `node:16-alpine` base image. It’s minimal yet provides everything needed to run a Node.js backend efficiently, keeping the container small and fast.
+The goal was to:
+- Create a virtual machine using Vagrant.
+- Use Ansible to automate the installation of Docker, clone a GitHub repository, build a Docker image, and run the container.
+- Ensure that the backend service is accessible and functional.
+- Integrate MongoDB Atlas (a cloud-based MongoDB service) instead of setting up a local database.
 
-### MongoDB:
-For the database, I used the official `mongo` image. It’s a solid, well-maintained image that’s great for development and small-scale production environments.
+## Tools Used
 
----
+- **Vagrant:** Used to create and provision a virtual machine.
+- **Ansible:** Used to automate the setup and configuration process inside the VM.
+- **Docker:** Used to containerize the backend application.
+- **MongoDB Atlas:** Used as a hosted NoSQL database (no need for local database container).
 
-## 2. Dockerfile Breakdown
-Here’s a breakdown of the Dockerfile and key instructions I used:
+## Why MongoDB Atlas?
 
-- `FROM`: sets the base image for each stage.
-- `WORKDIR`: ensures we’re working in the correct directory in the container.
-- `COPY`: brings files from the host machine into the container.
-- `RUN`: installs the necessary dependencies.
-- `EXPOSE`: tells Docker which port the app uses.
-- `CMD`: defines how to run the app in the container.
+Instead of running a local MongoDB instance, I used MongoDB Atlas for several reasons:
+- It's hosted in the cloud, so there's no need to manage it manually.
+- The backend only needs the connection string to start interacting with the database.
+- It simplifies the setup by removing the need for a separate container or role for the database.
 
-### For the frontend:
-I used a multi-stage build. In the first stage, I build the React app using Node 16 with `npm run build`, and then in the second stage, I use Nginx to serve the built app.
+Because of this, there is **no separate role** for database setup in this project.
 
-This means only the necessary build files are copied to the Nginx image, which helps reduce the final image size and lets Nginx handle serving static files for faster performance.
+## Ansible Role Structure
 
-Using Nginx for serving the React app is a good practice in production. Nginx is really efficient at serving static files and can handle much more traffic than Node.js in this case, making the app more scalable.
+This project uses roles for better organization. Here's what each role does:
 
----
+### 1. setup_logic
+- Installs Docker on the VM.
+- Ensures all required dependencies are in place.
+- Prepares the environment for running containers.
 
-## 3. Networking with Docker Compose
-I created a custom bridge network called `app-net` to enable the containers (client, backend, and MongoDB) to communicate with each other internally. This gives me more control over how the containers interact compared to using Docker’s default network.
+### 2. back-end-logic
+- Clones the backend project from GitHub.
+- Builds the Docker image using the provided Dockerfile.
+- Runs the container and ensures it connects to the MongoDB Atlas database.
+- The `server.js` or `index.js` file should include the Atlas URI.
 
-### For port mapping:
-- The React frontend runs on port 3000.
-- The Node backend runs on port 5000.
-- MongoDB runs on port 27017.
+## Playbook Workflow
 
-I also used `depends_on` to ensure the services start in the correct order. This way, the frontend won’t try to connect to the backend or the database before they’re ready.
+The main playbook:
+- Calls the roles in order.
+- Ensures the VM is ready with Docker.
+- Pulls the application code.
+- Builds and runs the backend in a container.
+- Verifies that the backend is up and running.
 
----
+## Accessing the App
 
-## 4. Volume Setup
-To manage data persistence for MongoDB, I defined a named volume called `app-mongo-data` and mounted it to `/data/db` inside the Mongo container. This ensures that even if the Mongo container is stopped or removed, the database data will persist and be available for future use.
+Once everything is set up:
+- Open a browser and go to `http://localhost:5000` (or the correct exposed port).
+- The backend should be live and connected to MongoDB Atlas.
 
----
+## Challenges and Solutions
 
-## 5. Git Workflow
-For the Git workflow, I kept things simple but effective. Here’s how I went about it:
+- **Dockerfile Errors:** I had to ensure the Dockerfile was in the right directory and correctly referenced in the Ansible task.
+- **PM2 Conflicts:** Initially used `pm2` to start the backend but later switched to using Docker.
+- **MongoDB Atlas Setup:** Ensured the connection string was correct and used environment variables to keep it secure.
 
-- **Cloning**: First, I cloned the repository to get everything set up on my local machine.
-- **Adding**: After making changes, I used `git add .` to stage all the files I modified or added.
-- **Committing**: Once I was happy with the changes, I committed them with clear messages using `git commit -m "Your commit message"`.
+## Lessons Learned
 
----
-
-## 6. Running & Debugging the App
-To get everything up and running:
-
-```bash
-docker-compose up --build
-
-### Debugging
-
-For debugging, I used a few useful Docker commands:
-
-- `docker ps` to check which containers were running.
-- `docker logs <container>` to check logs for any errors or issues.
-- `docker exec -it <container> /bin/sh` to get inside a container and inspect the environment or run commands directly.
-
-I also tested the app by accessing the frontend via a browser and interacting with the backend API to ensure everything was functioning correctly.
-
----
-
-## 7. Good Practices Followed
-
-Here are some good practices I followed to keep the project maintainable and professional:
-
-- **Semantic versioning** for Docker image tags (`v1.0.0`, `v1.2.0`) made it easy to track versions.
-- I included a `.dockerignore` file to exclude unnecessary files from the build context and keep the image clean.
-- I commented on the Dockerfile and Docker Compose file to explain the purpose of different parts and make it easier for others (or myself in the future) to understand the setup.
-
----
-
-## 8. Screenshot from DockerHub
-
-I've included a screenshot of the `elijah-yolo-client` and `elijah-yolo-backend` images with the tags `v1.2.0` and `v1.0.0` respectively on DockerHub. This shows that the image was successfully pushed and is available for use.
+- How to automate server setup with Ansible.
+- How to use roles to organize Ansible tasks.
+- How to build and run Docker containers inside a virtual machine.
+- How to integrate a cloud database service with a local development environment.
+- The importance of directory structure and path references in automation.
