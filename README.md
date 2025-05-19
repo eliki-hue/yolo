@@ -120,7 +120,13 @@ To inspect or run commands manually:
 
 This section shows how to deploy the frontend and backend containers to Kubernetes, either locally with Minikube or in the cloud on GKE.
 
+## Prerequisites
+    kubectl
+
+    Minikube (for local) or gcloud + GKE setup (for cloud)
+
 ### 1. Build or Pull Your Docker Images
+
 
 - **Option A: Build locally in Minikube**
   ```bash
