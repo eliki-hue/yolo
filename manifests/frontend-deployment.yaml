@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: frontend-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
@@ -15,10 +15,8 @@ spec:
       containers:
       - name: frontend
         image: elikie/elijah-yolo-client:v1.2.0
-        # resources:
-        #   limits:
-        #     memory: "128Mi"
-        #     cpu: "50m"
+        #resources:
+  
         ports:
         - containerPort: 3000
 

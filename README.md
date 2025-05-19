@@ -112,3 +112,57 @@ To inspect or run commands manually:
 
 
     vagrant ssh
+
+
+# ORCHESTRATION
+
+## Orchestration on Kubernetes
+
+This section shows how to deploy the frontend and backend containers to Kubernetes, either locally with Minikube or in the cloud on GKE.
+
+### 1. Build or Pull Your Docker Images
+
+- **Option A: Build locally in Minikube**
+  ```bash
+  eval $(minikube docker-env)
+  docker build -t yourhub/backend:v1 ./backend
+  docker build -t yourhub/frontend:v1 ./frontend
+
+# Apply Kubernetes Manifests
+
+    kubectl apply -f backend-deployment.yaml
+    kubectl apply -f backend-service.yaml
+    kubectl apply -f frontend-deployment.yaml
+    kubectl apply -f frontend-service.yaml
+
+
+    backend-deployment.yaml defines a Deployment for your Node.js API
+
+    backend-service.yaml exposes it on port 5000
+
+    frontend-deployment.yaml defines a Deployment for your React app
+
+    frontend-service.yaml exposes it on port 3000
+
+# Cloud (GKE)
+
+    Ensure your cluster is up and you’ve run:
+
+
+    gcloud container clusters get-credentials <cluster-name> --zone <zone>
+
+## Apply the same manifests:
+
+
+    kubectl apply -f .
+
+## List services to find the external IPs:
+
+
+    kubectl get svc
+
+### Visit:
+
+
+    http://<frontend-external-ip>:3000
+    http://<backend-external-ip>:5000/api
