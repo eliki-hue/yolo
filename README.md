@@ -1,4 +1,4 @@
-# E-commerce Backend Setup with Docker and Ansible
+# E-Commerce Deployment: Docker, Ansible, Vagrant & Kubernetes
 
 This project sets up a simple e-commerce backend using Node.js and Docker. It uses Ansible to automate the setup inside a Vagrant virtual machine. The goal was to make deployment easy and repeatable using configuration management tools.
 
