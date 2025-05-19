@@ -20,6 +20,10 @@ spec:
           command: ["npm", "start"] 
           ports:
             - containerPort: 5000
+
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://eliki:eliki13720@devops09-ip1.zrpcvub.mongodb.net/"
           resources:
             limits:
               memory: "256Mi"
