@@ -1,5 +1,7 @@
 # E-Commerce Deployment: Docker, Ansible, Vagrant & Kubernetes
 
+## working orchestration working url: http://35.232.60.165:3000/
+
 This project sets up a simple e-commerce backend using Node.js and Docker. It uses Ansible to automate the setup inside a Vagrant virtual machine. The goal was to make deployment easy and repeatable using configuration management tools.
 
 ## Project Structure
