@@ -14,9 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: elikie/elijah-yolo-client:v1.2.0
-        #resources:
-  
+        image: elikie/elijah-yolo-client:v1.2.0     
         ports:
         - containerPort: 3000
 
